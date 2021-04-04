@@ -3,7 +3,9 @@ const { HttpCode } = require('../helpers/constants');
 
 const getTheoryTest = async (req, res, next) => {
   try {
-    const tests = await Test.getTheoryTest(req.query);
+    const data = await Test.getTheoryTest();
+    const tests = data;
+    console.log(data);
     res.json({
       status: 'success',
       code: HttpCode.OK,
