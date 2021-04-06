@@ -21,7 +21,7 @@ const reg = async (req, res, next) => {
     // await res.redirect('./signin');
     return res.status(HttpCode.CREATED).json({
       status: 'success',
-      code: HttpCode.OK,
+      code: HttpCode.CREATED,
       data: {
         email: newUser.email,
         name: newUser.name,

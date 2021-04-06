@@ -3,12 +3,12 @@ const { HttpCode } = require('../helpers/constants');
 
 const getTheoryTest = async (req, res, next) => {
   try {
-    const theoryTest = await Test.getTheoryTest(req.query);
+    const test = await Test.getTheoryTest(req.query);
     res.json({
       status: 'success',
       code: HttpCode.OK,
       data: {
-        theoryTest,
+        test,
       },
     });
   } catch (e) {
@@ -18,12 +18,12 @@ const getTheoryTest = async (req, res, next) => {
 
 const getTechTest = async (req, res, next) => {
   try {
-    const techTest = await Test.getTechnicalTest();
+    const test = await Test.getTechnicalTest();
     res.json({
       status: 'success',
       code: HttpCode.OK,
       data: {
-        techTest,
+        test,
       },
     });
   } catch (e) {
