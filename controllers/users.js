@@ -18,6 +18,7 @@ const reg = async (req, res, next) => {
       });
     }
     const newUser = await Users.create(req.body);
+    // await res.redirect('./signin');
     return res.status(HttpCode.CREATED).json({
       status: 'success',
       code: HttpCode.OK,
