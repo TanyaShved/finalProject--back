@@ -18,9 +18,10 @@ const reg = async (req, res, next) => {
       });
     }
     const newUser = await Users.create(req.body);
+    // await res.redirect('./signin');
     return res.status(HttpCode.CREATED).json({
       status: 'success',
-      code: HttpCode.OK,
+      code: HttpCode.CREATED,
       data: {
         email: newUser.email,
         name: newUser.name,
