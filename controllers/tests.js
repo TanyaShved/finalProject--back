@@ -39,7 +39,7 @@ const theoryAnswer = async (req, res, next) => {
     const rightAnswer = Test.getQtyAnsw(answer, theoryTest);
     const incorrectAnswer = 12 - rightAnswer;
 
-    return res.status(201).json({
+    return res.status(200).json({
       status: 'success',
       code: HttpCode.CREATED,
       data: {
@@ -60,7 +60,7 @@ const techAnswer = async (req, res, next) => {
     const rightAnswer = Test.getQtyAnsw(answer, techTest);
     const incorrectAnswer = 12 - rightAnswer;
 
-    return res.status(201).json({
+    return res.status(200).json({
       status: 'success',
       code: HttpCode.CREATED,
       data: {
