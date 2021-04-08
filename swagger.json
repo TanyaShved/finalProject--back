@@ -3,7 +3,7 @@
   "info": {
     "version": "1.0",
     "title": "QA Testing API",
-    "description": "Testing users QA",
+    "description": "QA testing users",
     "license": {
       "name": "MIT",
       "url": "https://opensource.org/licenses/MIT"
@@ -160,7 +160,7 @@
       }
     },
     "/api/tests/theory": {
-      "post": {
+      "get": {
         "tags": ["Tests"],
         "summary": "Theory test list",
         "security": [{ "Bearer": [] }],
@@ -192,7 +192,7 @@
       }
     },
     "/api/tests/tech": {
-      "post": {
+      "get": {
         "tags": ["Tests"],
         "summary": "Technical test list",
         "security": [{ "Bearer": [] }],
@@ -218,6 +218,74 @@
           },
           "404": {
             "description": "Invalid user / Invalid session",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/tests/result-theory": {
+      "post": {
+        "tags": ["Tests"],
+        "summary": "Answers to test-theory questions",
+        "parameters": [],
+        "requestBody": {
+          "description": "Answer's object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AnswerTheoryOrTechRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResultTheoryOrTechResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/tests/result-tech": {
+      "post": {
+        "tags": ["Tests"],
+        "summary": "Answers to test-tech questions",
+        "parameters": [],
+        "requestBody": {
+          "description": "Answer's object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AnswerTheoryOrTechRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResultTheoryOrTechResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
             "content": {}
           }
         }
@@ -307,6 +375,35 @@
                 }
               ]
             }
+          }
+        }
+      },
+      "AnswerTheoryOrTechRequest": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "questionId": {
+              "type": "integer",
+              "example": "1"
+            },
+            "answer": {
+              "type": "string",
+              "example": "eXperience Points"
+            }
+          }
+        }
+      },
+      "ResultTheoryOrTechResponse": {
+        "type": "object",
+        "properties": {
+          "rightAnswer": {
+            "type": "integer",
+            "example": "5"
+          },
+          "incorrectAnswer": {
+            "type": "integer",
+            "example": "7"
           }
         }
       }
