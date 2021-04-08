@@ -11,8 +11,8 @@ router.get('/', (req, res, next) => {
   }
 });
 
-router.get('/tech', testController.getTechTest);
-router.get('/theory', testController.getTheoryTest);
+router.get('/tech', testController.getTheoryRandomTest);
+router.get('/theory', testController.getTechnicalRandomTest);
 
 router.post('/result-theory', testController.theoryAnswer);
 router.post('/result-tech', testController.techAnswer);

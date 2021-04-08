@@ -1,9 +1,9 @@
 const Test = require('../model/tests');
 const { HttpCode } = require('../helpers/constants');
 
-const getTheoryTest = async (req, res, next) => {
+const getTheoryRandomTest = async (req, res, next) => {
   try {
-    const test = await Test.getTheoryTest(req.query);
+    const test = await Test.getTheoryRandomTest(req.query);
     res.json({
       status: 'success',
       code: HttpCode.OK,
@@ -16,9 +16,9 @@ const getTheoryTest = async (req, res, next) => {
   }
 };
 
-const getTechTest = async (req, res, next) => {
+const getTechnicalRandomTest = async (req, res, next) => {
   try {
-    const test = await Test.getTechnicalTest();
+    const test = await Test.getTechnicalRandomTest();
     res.json({
       status: 'success',
       code: HttpCode.OK,
@@ -74,8 +74,8 @@ const techAnswer = async (req, res, next) => {
 };
 
 module.exports = {
-  getTheoryTest,
-  getTechTest,
+  getTheoryRandomTest,
+  getTechnicalRandomTest,
   theoryAnswer,
   techAnswer,
 };
