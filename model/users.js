@@ -5,6 +5,7 @@ const create = async ({ name, email, password, picture }) => {
   return await user.save();
 };
 
+
 const findByEmail = async email => {
   return await User.findOne({ email });
 };

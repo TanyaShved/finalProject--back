@@ -168,7 +168,7 @@ const googleRedirect = async (req, res, next) => {
     }
 
     return res.redirect(
-      `${BASE_URL}/`
+      `${FRONTEND_URL}/`
   );
   } catch (e) {
     next(e);
