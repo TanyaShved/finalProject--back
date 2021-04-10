@@ -5,19 +5,18 @@ const SALT_WORK_FACTOR = 8;
 
 const userSchema = new Schema(
   {
-    name: {
+   name: {
       type: String,
-      default: 'NewUser',
+      required: [true, 'Set name for contact'],
     },
-
     email: {
       type: String,
-      require: [true, 'Email required'],
+      required: [true, 'Set email for user'],
       unique: true,
       validate(value) {
-        const re = /\S+@\S+\.\S+/;
-        return re.test(String(value).toLocaleLowerCase());
-      },
+            const re = /\S+@\S+\.\S+/
+            return re.test(String(value).toLowerCase())
+      }
     },
     password: {
       type: String,
@@ -28,6 +27,9 @@ const userSchema = new Schema(
       type: String,
       default: null,
     },
+     picture: {
+    type: String,
+    } 
   },
   { versionKey: false, timestamps: true },
 );
