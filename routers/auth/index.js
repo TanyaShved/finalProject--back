@@ -8,6 +8,9 @@ router.post('/signup', validate.regUser, userController.reg);
 router.post('/signin', validate.loginUser, userController.login);
 router.post('/logout', guard, userController.logout);
 
+router.get("/google", userController.googleAuth);
+router.get("/google-redirect", userController.googleRedirect);
+
 router.get('/userinfo', guard, userController.userCurrent);
 
 module.exports = router;

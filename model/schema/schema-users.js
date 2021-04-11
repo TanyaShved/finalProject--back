@@ -5,11 +5,10 @@ const SALT_WORK_FACTOR = 8;
 
 const userSchema = new Schema(
   {
-    name: {
+     name: {
       type: String,
-      default: 'NewUser',
+      required: [true, 'Name required'],
     },
-
     email: {
       type: String,
       require: [true, 'Email required'],
@@ -23,7 +22,12 @@ const userSchema = new Schema(
       type: String,
       require: [true, 'Password required'],
     },
-
+  avatarURL: {
+    type: String,
+    default: function () {
+      return gravatar.url(this.email, {s: "250"}, true)
+    } 
+  },
     token: {
       type: String,
       default: null,
