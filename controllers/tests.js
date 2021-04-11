@@ -34,7 +34,7 @@ const getTechnicalRandomTest = async (req, res, next) => {
 const theoryAnswer = async (req, res, next) => {
   try {
     const answer = await req.body;
-    const theoryTest = await Test.getTheoryTest();
+    const theoryTest = await Test.getTechnicalTest();
 
     const rightAnswer = Test.getQtyAnsw(answer, theoryTest);
     const incorrectAnswer = 12 - rightAnswer;
@@ -55,7 +55,7 @@ const theoryAnswer = async (req, res, next) => {
 const techAnswer = async (req, res, next) => {
   try {
     const answer = await req.body;
-    const techTest = await Test.getTechnicalTest();
+    const techTest = await Test.getTheoryTest();
 
     const rightAnswer = Test.getQtyAnsw(answer, techTest);
     const incorrectAnswer = 12 - rightAnswer;
