@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const testController = require('../../../controllers/tests');
-// const guard = require('../../../helpers/guard');
+const testController = require('../../controllers/tests');
+// const guard = require('../../helpers/guard');
 
 router.get('/', (req, res, next) => {
   try {
