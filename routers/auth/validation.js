@@ -2,9 +2,10 @@ const Joi = require('joi');
 const { HttpCode } = require('../../helpers/constants');
 
 const schemaRegistrationUser = Joi.object({
+  name: Joi.string().min(3).max(30).required(),
   email: Joi.string().email().required(),
   password: Joi.string().min(3).required(),
-  sex: Joi.string(),
+  // avatarURL: Joi.string()
 });
 
 const schemaLoginUser = Joi.object({

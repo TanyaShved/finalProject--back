@@ -1,5 +1,6 @@
 const { Schema, model } = require('mongoose');
 const bcrypt = require('bcryptjs');
+const axios = require("axios");
 
 const SALT_WORK_FACTOR = 8;
 
@@ -24,8 +25,10 @@ const userSchema = new Schema(
     },
   avatarURL: {
     type: String,
-    default: function () {
-      return gravatar.url(this.email, {s: "250"}, true)
+    default: async function () {
+    const avatar = await axios.get(`https://ui-avatars.com/api/?name=${this.name}`)
+      console.log(typeof avatar.request.res.responseUrl)
+    return avatar.request.res.responseUrl
     } 
   },
     token: {
