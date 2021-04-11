@@ -1,6 +1,5 @@
 const { Schema, model } = require('mongoose');
 const bcrypt = require('bcryptjs');
-const axios = require("axios");
 
 const SALT_WORK_FACTOR = 8;
 
@@ -23,14 +22,10 @@ const userSchema = new Schema(
       type: String,
       require: [true, 'Password required'],
     },
-  avatarURL: {
-    type: String,
-    default: async function () {
-    const avatar = await axios.get(`https://ui-avatars.com/api/?name=${this.name}`)
-      console.log(typeof avatar.request.res.responseUrl)
-    return avatar.request.res.responseUrl
-    } 
-  },
+    avatarURL: {
+      type: String,
+      required: [true],
+    },
     token: {
       type: String,
       default: null,

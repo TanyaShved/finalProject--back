@@ -1,6 +1,16 @@
+const uiavatars = require("ui-avatars");
 const User = require('./schema/schema-users');
 
-const create = async ({ name, email, password, avatarURL }) => {
+const create = async ({ name, email, password }) => {
+  const avatarURL = uiavatars.generateAvatar({
+    uppercase: true,
+    name: name,
+    fontsize: 0.5,
+    bold: true,
+    length: 1,
+    rounded: true,
+    size: 200,
+  });
   const user = new User({ name, email, password, avatarURL });
   return await user.save();
 };
