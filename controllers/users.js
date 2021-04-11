@@ -154,7 +154,7 @@ const googleRedirect = async (req, res, next) => {
     const user = await Users.findByEmail(email);
 
     if (!user) {
-    const newUser = await Users.create({ name, email, password: name, avatarURL: picture });
+    const newUser = await Users.createGoogle({ name, email, password: name, avatarURL: picture });
     const id = await newUser.id;
     const payload = { id };
     const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '2h' });

@@ -15,6 +15,11 @@ const create = async ({ name, email, password }) => {
   return await user.save();
 };
 
+const createGoogle = async ({ name, email, password, avatarURL }) => {
+  const user = new User({ name, email, password, avatarURL });
+  return await user.save();
+};
+
 const findByEmail = async email => {
   return await User.findOne({ email });
 };
@@ -30,6 +35,7 @@ const updateToken = async (id, token) => {
 module.exports = {
   findByEmail,
   create,
+  createGoogle,
   findById,
   updateToken,
 };
