@@ -164,7 +164,7 @@
         }
       }
     },
-    "/tests": {
+    "/test": {
       "get": {
         "tags": ["Tests"],
         "summary": "Starting page for tests",
@@ -180,7 +180,7 @@
         }
       }
     },
-    "/tests/theory": {
+    "/test/theory": {
       "get": {
         "tags": ["Tests"],
         "summary": "Theory test list",
@@ -203,7 +203,7 @@
         }
       }
     },
-    "/tests/tech": {
+    "/test/tech": {
       "get": {
         "tags": ["Tests"],
         "summary": "Technical test list",
@@ -226,7 +226,7 @@
         }
       }
     },
-    "/tests/result-theory": {
+    "/test/result-theory": {
       "post": {
         "tags": ["Tests"],
         "summary": "Answers to test-theory questions",
@@ -263,7 +263,7 @@
         }
       }
     },
-    "/tests/result-tech": {
+    "/test/result-tech": {
       "post": {
         "tags": ["Tests"],
         "summary": "Answers to test-tech questions",
