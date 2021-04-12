@@ -169,7 +169,7 @@ const googleRedirect = async (req, res, next) => {
     }
 
     return res.redirect(
-      `${FRONTEND_URL}/tests`
+      `${FRONTEND_URL}/test`
   );
   } catch (e) {
     next(e);
