@@ -68,6 +68,7 @@ const login = async (req, res, next) => {
     next(e);
   }
 };
+
 const logout = async (req, res, next) => {
   try {
     const id = req.user.id;
@@ -168,7 +169,7 @@ const googleRedirect = async (req, res, next) => {
     }
 
     return res.redirect(
-      `${FRONTEND_URL}/`
+      `${FRONTEND_URL}/tests`
   );
   } catch (e) {
     next(e);

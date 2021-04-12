@@ -18,7 +18,7 @@ const getTheoryRandomTest = async (req, res, next) => {
 
 const getTechnicalRandomTest = async (req, res, next) => {
   try {
-    const test = await Test.getTechnicalRandomTest();
+    const test = await Test.getTechnicalRandomTest(req.query);
     res.json({
       status: 'success',
       code: HttpCode.OK,

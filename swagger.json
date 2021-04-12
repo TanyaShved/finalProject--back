@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "version": "1.0",
+    "version": "1.1",
     "title": "QA Testing API",
     "description": "QA testing users",
     "license": {
@@ -11,7 +11,7 @@
   },
   "consumes": ["application/json"],
   "produces": ["application/json"],
-  "servers": [{ "url": "http://localhost:3000" }],
+  "servers": [{ "url": "https://protest9.herokuapp.com" }],
   "tags": [
     {
       "name": "Users",
@@ -23,18 +23,17 @@
     }
   ],
   "paths": {
-    "/api/users/signup": {
+    "/auth/signup": {
       "post": {
         "tags": ["Users"],
         "summary": "Users registration",
         "parameters": [],
         "requestBody": {
-          "description": "Registration's object",
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/RegistrationAndLoginRequest"
+                "$ref": "#/components/schemas/RegistrationRequest"
               }
             }
           }
@@ -45,34 +44,31 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/RegistrationAndLoginResponse"
+                  "$ref": "#/components/schemas/RegistrationResponse"
                 }
               }
             }
           },
           "400": {
-            "description": "Bad request (invalid request body)",
-            "content": {}
+            "description": "Bad request (invalid request body)"
           },
           "409": {
-            "description": "Provided email already exists",
-            "content": {}
+            "description": "Provided email already exists"
           }
         }
       }
     },
-    "/api/users/signin": {
+    "/auth/signin": {
       "post": {
         "tags": ["Users"],
         "summary": "Users authentication",
         "parameters": [],
         "requestBody": {
-          "description": "Authentication's object",
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/RegistrationAndLoginRequest"
+                "$ref": "#/components/schemas/LoginRequest"
               }
             }
           }
@@ -83,57 +79,92 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/RegistrationAndLoginResponse"
+                  "$ref": "#/components/schemas/LoginResponse"
                 }
               }
             }
           },
           "401": {
-            "description": "Email or password is wrong",
-            "content": {}
+            "description": "Email or password is wrong"
           }
         }
       }
     },
-    "/api/users/logout": {
+    "/auth/logout": {
       "post": {
         "tags": ["Users"],
-        "summary": "Logout",
+        "summary": "Users logout",
         "parameters": [],
         "security": [{ "Bearer": [] }],
         "responses": {
           "204": {
-            "description": "Successful operation",
-            "content": {}
-          },
-          "400": {
-            "description": "No token provided",
-            "content": {}
+            "description": "Successful operation"
           },
           "401": {
-            "description": "Unauthorized (invalid access token)",
-            "content": {}
+            "description": "Unauthorized (invalid access token)"
           }
         }
       }
     },
-    "/api/users/google": {
+    "/auth/google": {
       "get": {
         "tags": ["Users"],
-        "summary": "Google authentication. WARNING: Works only for sign-in, after registered on front-end (if you're writing your back-end for a SPECIFIC front-end, then you can configure it right to work both for sign-up & sign-in)",
+        "summary": "Google authentication",
         "responses": {
           "200": {
-            "description": "Successful operation (redirect to front-end with accessToken, refreshToken and sid in query). Then use GET /user",
-            "content": {}
+            "description": "Successful operation (redirect to front-end with accessToken, refreshToken and sid in query). Then use GET /auth"
           },
           "403": {
-            "description": "Not registered or registered with postman",
-            "content": {}
+            "description": "Not registered or registered with problems"
           }
         }
       }
     },
-    "/api/tests": {
+    "/auth/google-redirect": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Google redirect after authentication",
+        "responses": {
+           "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not registered or registered with problems"
+          }
+        }
+      }
+    },
+    "/auth/userinfo": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Information about the current user",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CurrentResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized (invalid access token)"
+          }
+        }
+      }
+    },
+    "/tests": {
       "get": {
         "tags": ["Tests"],
         "summary": "Starting page for tests",
@@ -141,25 +172,15 @@
         "parameters": [],
         "responses": {
           "200": {
-            "description": "Successful operation",
-            "content": {}
-          },
-          "400": {
-            "description": "No token provided",
-            "content": {}
+            "description": "Successful operation"
           },
           "401": {
-            "description": "Unauthorized (invalid access token)",
-            "content": {}
-          },
-          "404": {
-            "description": "Invalid user / Invalid session",
-            "content": {}
+            "description": "Unauthorized (invalid access token)"
           }
         }
       }
     },
-    "/api/tests/theory": {
+    "/tests/theory": {
       "get": {
         "tags": ["Tests"],
         "summary": "Theory test list",
@@ -176,22 +197,13 @@
               }
             }
           },
-          "400": {
-            "description": "No token provided",
-            "content": {}
-          },
           "401": {
-            "description": "Unauthorized (invalid access token)",
-            "content": {}
-          },
-          "404": {
-            "description": "Invalid user / Invalid session",
-            "content": {}
+            "description": "Unauthorized (invalid access token)"
           }
         }
       }
     },
-    "/api/tests/tech": {
+    "/tests/tech": {
       "get": {
         "tags": ["Tests"],
         "summary": "Technical test list",
@@ -208,25 +220,17 @@
               }
             }
           },
-          "400": {
-            "description": "No token provided",
-            "content": {}
-          },
           "401": {
-            "description": "Unauthorized (invalid access token)",
-            "content": {}
-          },
-          "404": {
-            "description": "Invalid user / Invalid session",
-            "content": {}
+            "description": "Unauthorized (invalid access token)"
           }
         }
       }
     },
-    "/api/tests/result-theory": {
+    "/tests/result-theory": {
       "post": {
         "tags": ["Tests"],
         "summary": "Answers to test-theory questions",
+        "security": [{ "Bearer": [] }],
         "parameters": [],
         "requestBody": {
           "description": "Answer's object",
@@ -251,13 +255,15 @@
             }
           },
           "400": {
-            "description": "Bad request (invalid request body)",
-            "content": {}
+            "description": "Bad request (invalid request body)"
+          },
+          "401": {
+            "description": "Unauthorized (invalid access token)"
           }
         }
       }
     },
-    "/api/tests/result-tech": {
+    "/tests/result-tech": {
       "post": {
         "tags": ["Tests"],
         "summary": "Answers to test-tech questions",
@@ -285,8 +291,10 @@
             }
           },
           "400": {
-            "description": "Bad request (invalid request body)",
-            "content": {}
+            "description": "Bad request (invalid request body)"
+          },
+          "401": {
+            "description": "Unauthorized (invalid access token)"
           }
         }
       }
@@ -294,7 +302,43 @@
   },
   "components": {
     "schemas": {
-      "RegistrationAndLoginRequest": {
+      "RegistrationRequest": {
+        "type": "object",
+        "required": ["name", "email", "password"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "User's name",
+            "example": "Ivan Ivanov"
+          },
+          "email": {
+            "type": "string",
+            "description": "User's email",
+            "format": "email"
+          },
+          "password": {
+            "type": "string",
+            "description": "User's password",
+            "example": "qwerty123"
+          }
+        }
+      },
+      "RegistrationResponse": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "User's name",
+            "example": "Ivan Ivanov"
+          },
+          "email": {
+            "type": "string",
+            "description": "User's email",
+            "format": "email"
+          }
+      }
+    },
+       "LoginRequest": {
         "type": "object",
         "required": ["email", "password"],
         "properties": {
@@ -310,23 +354,44 @@
           }
         }
       },
-      "RegistrationAndLoginResponse": {
+      "LoginResponse": {
         "type": "object",
         "properties": {
+          "name": {
+            "type": "string",
+            "description": "User's name",
+            "example": "Ivan Ivanov"
+          },
           "email": {
             "type": "string",
             "description": "User's email",
             "format": "email"
           },
-          "userId": {
+          "avatarURL": {
             "type": "string",
-            "description": "User's id",
-            "example": "606c3b41fb007e1a907af48a"
+            "description": "User's avatar",
+            "example": "https://ui-avatars.com/api/?name=Ivan Ivanov&size=200&font-size=0.5&length=1&rounded=true&bold=true&uppercase=true"
+          },
+          "token": {
+           "type": "string",
+           "description": "User's token",
+           "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwNzJlNmUwMjJiY2NjMjUyYmQ1ZDNmNiIsImlhdCI6MTYxODE0Mjk0NCwiZXhwIjoxNjE4MTUwMTQ0fQ.-Cq3mYTHEMVjyKF6d6qxmZbrdzW3QvbvwZbpQDNwICw"
+        }
+        }
+      },
+      "CurrentResponse": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "User's name",
+            "example": "Ivan Ivanov"
+          },
+          "email": {
+            "type": "string",
+            "description": "User's email",
+            "format": "email"
           }
-        },
-        "example": {
-          "email": "test@gmail.com",
-          "userId": "606c3b41fb007e1a907af48a"
         }
       },
       "GetTestTheoryOrTechResponse": {
