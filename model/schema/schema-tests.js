@@ -1,7 +1,26 @@
-const { Schema, model, SchemaTypes } = require('mongoose');
-const mongoosePaginate = require('mongoose-paginate-v2');
+const { Schema, model } = require('mongoose');
 
-const testResultSchema = new Schema({ versionKey: false });
+const testResultSchema = new Schema(
+  {
+    question: {
+      type: String,
+      unique: true,
+    },
+    questionId: {
+      type: String,
+      unique: true,
+    },
+    answers: {
+      type: Array,
+      required: true,
+    },
+    rightAnswer: {
+      type: String,
+      required: true,
+    },
+  },
+  { versionKey: false, timestamps: true },
+);
 
 // contactSchema.plugin(mongoosePaginate);
 const TheoryTest = model('theory-test', testResultSchema);
