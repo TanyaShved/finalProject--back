@@ -267,6 +267,7 @@
       "post": {
         "tags": ["Tests"],
         "summary": "Answers to test-tech questions",
+        "security": [{ "Bearer": [] }],
         "parameters": [],
         "requestBody": {
           "description": "Answer's object",
