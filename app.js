@@ -29,7 +29,7 @@ app.use((req, res) => {
 
 app.use((err, req, res, next) => {
   res
-    .status(err.status || HttpCode.INTERNAL_SERAVER_ERROR)
+    .status(err.status || HttpCode.INTERNAL_SERVER_ERROR)
     .json({ message: err.message });
 });
 
