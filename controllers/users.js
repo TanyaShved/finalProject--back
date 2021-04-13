@@ -162,7 +162,7 @@ const googleRedirect = async (req, res, next) => {
     await Users.updateToken(id, token);
 
       return res.redirect(
-      `${FRONTEND_URL}/?token=${token}`
+      `${FRONTEND_URL}?token=${token}`
   );
 
     } else {
@@ -172,7 +172,7 @@ const googleRedirect = async (req, res, next) => {
     await Users.updateToken(id, token);
        
       return res.redirect(
-      `${FRONTEND_URL}/?token=${token}`
+      `${FRONTEND_URL}?token=${token}`
   );
       
     }
