@@ -160,17 +160,22 @@ const googleRedirect = async (req, res, next) => {
     const payload = { id };
     const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '2h' });
     await Users.updateToken(id, token);
-      
+
+      return res.redirect(
+      `${FRONTEND_URL}/?token=${token}`
+  );
+
     } else {
     const id = await user.id;
     const payload = { id };
     const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '2h' });
     await Users.updateToken(id, token);
-    }
-
-    return res.redirect(
-      `${FRONTEND_URL}/test`
+       
+      return res.redirect(
+      `${FRONTEND_URL}/?token=${token}`
   );
+      
+    }
   } catch (e) {
     next(e);
   }
