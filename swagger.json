@@ -1,9 +1,9 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "version": "1.1",
-    "title": "QA Testing API",
-    "description": "QA testing users",
+    "version": "1.0.1",
+    "title": "Pro Test API",
+    "description": "Application for testing QA engineers",
     "license": {
       "name": "MIT",
       "url": "https://opensource.org/licenses/MIT"
@@ -125,7 +125,7 @@
         "tags": ["Users"],
         "summary": "Google redirect after authentication",
         "responses": {
-           "200": {
+          "200": {
             "description": "Successful operation",
             "content": {
               "application/json": {
@@ -157,22 +157,6 @@
                 }
               }
             }
-          },
-          "401": {
-            "description": "Unauthorized (invalid access token)"
-          }
-        }
-      }
-    },
-    "/test": {
-      "get": {
-        "tags": ["Tests"],
-        "summary": "Starting page for tests",
-        "security": [{ "Bearer": [] }],
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "Successful operation"
           },
           "401": {
             "description": "Unauthorized (invalid access token)"
@@ -337,9 +321,9 @@
             "description": "User's email",
             "format": "email"
           }
-      }
-    },
-       "LoginRequest": {
+        }
+      },
+      "LoginRequest": {
         "type": "object",
         "required": ["email", "password"],
         "properties": {
@@ -374,10 +358,10 @@
             "example": "https://ui-avatars.com/api/?name=Ivan Ivanov&size=200&font-size=0.5&length=1&rounded=true&bold=true&uppercase=true"
           },
           "token": {
-           "type": "string",
-           "description": "User's token",
-           "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwNzJlNmUwMjJiY2NjMjUyYmQ1ZDNmNiIsImlhdCI6MTYxODE0Mjk0NCwiZXhwIjoxNjE4MTUwMTQ0fQ.-Cq3mYTHEMVjyKF6d6qxmZbrdzW3QvbvwZbpQDNwICw"
-        }
+            "type": "string",
+            "description": "User's token",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwNzJlNmUwMjJiY2NjMjUyYmQ1ZDNmNiIsImlhdCI6MTYxODE0Mjk0NCwiZXhwIjoxNjE4MTUwMTQ0fQ.-Cq3mYTHEMVjyKF6d6qxmZbrdzW3QvbvwZbpQDNwICw"
+          }
         }
       },
       "CurrentResponse": {

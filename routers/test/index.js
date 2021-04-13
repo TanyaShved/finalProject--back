@@ -3,14 +3,6 @@ const router = express.Router();
 const testController = require('../../controllers/tests');
 // const guard = require('../../helpers/guard');
 
-router.get('/', (req, res, next) => {
-  try {
-    res.send();
-  } catch (e) {
-    next(e);
-  }
-});
-
 router.get('/theory', testController.getTechnicalRandomTest);
 router.get('/tech', testController.getTheoryRandomTest);
 
