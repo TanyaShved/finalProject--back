@@ -11,7 +11,7 @@ const getTechnicalTest = async () => {
 };
 
 const getTheoryRandomTest = async () => {
-  const results = await TheoryTest.find({});
+  const results = await TheoryTest.find(null, { rightAnswer: 0 });
   const randomArray = [];
   while (randomArray.length < 12) {
     const randomIndex = Math.floor(Math.random() * results.length);
@@ -24,7 +24,7 @@ const getTheoryRandomTest = async () => {
 };
 
 const getTechnicalRandomTest = async () => {
-  const results = await TechnicalTest.find({});
+  const results = await TechnicalTest.find(null, { rightAnswer: 0 });
   const randomArray = [];
   while (randomArray.length < 12) {
     const randomIndex = Math.floor(Math.random() * results.length);
