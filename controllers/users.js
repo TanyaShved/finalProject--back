@@ -117,7 +117,7 @@ const googleAuth = async (_req, res, next) => {
   try {
     const stringifiedParams = queryString.stringify({
       client_id: GOOGLE_CLIENT_ID,
-      redirect_uri: `https://protest9.herokuapp.com/auth/google-redirect`,
+      redirect_uri: `${BASE_URL}/auth/google-redirect`,
       scope: [
         'https://www.googleapis.com/auth/userinfo.email',
         'https://www.googleapis.com/auth/userinfo.profile',
@@ -147,7 +147,7 @@ const googleRedirect = async (req, res, next) => {
       data: {
         client_id: GOOGLE_CLIENT_ID,
         client_secret: GOOGLE_CLIENT_SECRET,
-        redirect_uri: `https://protest9.herokuapp.com/auth/google-redirect`,
+        redirect_uri: `${BASE_URL}/auth/google-redirect`,
         grant_type: 'authorization_code',
         code,
       },
@@ -171,7 +171,7 @@ const googleRedirect = async (req, res, next) => {
     await Users.updateToken(id, token);
 
       return res.redirect(
-      `https://protest9.netlify.app?token=${token}`
+      `${FRONTEND_URL}/auth/google${token}`
   );
 
     } else {
@@ -181,7 +181,7 @@ const googleRedirect = async (req, res, next) => {
     await Users.updateToken(id, token);
        
       return res.redirect(
-      `https://protest9.netlify.app?token=${token}`
+      `${FRONTEND_URL}/auth/google?token=${token}`
   );
       
     }
