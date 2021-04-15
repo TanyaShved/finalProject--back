@@ -171,7 +171,7 @@ const googleRedirect = async (req, res, next) => {
     await Users.updateToken(id, token);
 
       return res.redirect(
-      `${FRONTEND_URL}/auth/google?token=${token}&avatarURL=${newUser.avatarURL}`
+      `http://localhost:3000/auth/google?token=${token}&avatarURL=${newUser.avatarURL}`
   );
 
     } else {
@@ -181,7 +181,7 @@ const googleRedirect = async (req, res, next) => {
     await Users.updateToken(id, token);
        
       return res.redirect(
-      `${FRONTEND_URL}/auth/google?token=${token}&avatarURL=${user.avatarURL}`
+      `http://localhost:3000/auth/google?token=${token}&avatarURL=${user.avatarURL}`
   );
       
     }
