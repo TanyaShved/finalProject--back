@@ -130,20 +130,20 @@ const refreshToken = async (req, res, next) => {
         });
       }
 
-      const reqRefreshToken = authorizationHeader.replace('Bearer ', '');
+      // const reqRefreshToken = authorizationHeader.replace('Bearer ', '');
 
       let payload;
-      try {
-        payload = jwt.verify(reqRefreshToken, REFRESH_SECRET_KEY);
-      } catch (err) {
-        await Session.findByIdAndDelete(req.body.sessionId);
-        return res.status(HttpCode.UNAUTHORIZED).json({
-        status: 'error',
-        code: HttpCode.UNAUTHORIZED,
-        data: 'UNAUTHORIZED',
-        message: 'Email or password is wrong',
-      });
-      }
+      // try {
+      //   payload = jwt.verify(reqRefreshToken, REFRESH_SECRET_KEY);
+      // } catch (err) {
+      //   await Session.findByIdAndDelete(req.body.sessionId);
+      //   return res.status(HttpCode.UNAUTHORIZED).json({
+      //   status: 'error',
+      //   code: HttpCode.UNAUTHORIZED,
+      //   data: 'UNAUTHORIZED',
+      //   message: 'Email or password is wrong',
+      // });
+      // }
 
       const user = await Users.findById(payload.id);
       const session = await Session.findById(payload.sessionId);
