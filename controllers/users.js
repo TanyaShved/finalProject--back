@@ -171,7 +171,7 @@ const googleRedirect = async (req, res, next) => {
     await Users.updateToken(id, token);
 
       return res.redirect(
-      `${FRONTEND_URL}/auth/google${token}`
+      `${FRONTEND_URL}/auth/google?token=${token}`
   );
 
     } else {
