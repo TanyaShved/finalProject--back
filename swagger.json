@@ -1,0 +1,469 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "version": "1.0.1",
+    "title": "Pro Test API",
+    "description": "Application for testing QA engineers",
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "servers": [{ "url": "https://protest9.herokuapp.com" }],
+  "tags": [
+    {
+      "name": "Users",
+      "description": "Authorization endpoints"
+    },
+    {
+      "name": "Tests",
+      "description": "Testing API endpoints"
+    }
+  ],
+  "paths": {
+    "/auth/signup": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Users registration",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegistrationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegistrationResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)"
+          },
+          "409": {
+            "description": "Provided email already exists"
+          }
+        }
+      }
+    },
+    "/auth/signin": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Users authentication",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Email or password is wrong"
+          }
+        }
+      }
+    },
+    "/auth/logout": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Users logout",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "204": {
+            "description": "Successful operation"
+          },
+          "401": {
+            "description": "Unauthorized (invalid access token)"
+          }
+        }
+      }
+    },
+    "/auth/google": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Google authentication",
+        "responses": {
+          "200": {
+            "description": "Successful operation (redirect to front-end with accessToken, refreshToken and sid in query). Then use GET /auth"
+          },
+          "403": {
+            "description": "Not registered or registered with problems"
+          }
+        }
+      }
+    },
+    "/auth/google-redirect": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Google redirect after authentication",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not registered or registered with problems"
+          }
+        }
+      }
+    },
+    "/auth/userinfo": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Information about the current user",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CurrentResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized (invalid access token)"
+          }
+        }
+      }
+    },
+    "/test/theory": {
+      "get": {
+        "tags": ["Tests"],
+        "summary": "Theory test list",
+        "security": [{ "Bearer": [] }],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetTestTheoryOrTechResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized (invalid access token)"
+          }
+        }
+      }
+    },
+    "/test/tech": {
+      "get": {
+        "tags": ["Tests"],
+        "summary": "Technical test list",
+        "security": [{ "Bearer": [] }],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetTestTheoryOrTechResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized (invalid access token)"
+          }
+        }
+      }
+    },
+    "/test/result-theory": {
+      "post": {
+        "tags": ["Tests"],
+        "summary": "Answers to test-theory questions",
+        "security": [{ "Bearer": [] }],
+        "parameters": [],
+        "requestBody": {
+          "description": "Answer's object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AnswerTheoryOrTechRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResultTheoryOrTechResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)"
+          },
+          "401": {
+            "description": "Unauthorized (invalid access token)"
+          }
+        }
+      }
+    },
+    "/test/result-tech": {
+      "post": {
+        "tags": ["Tests"],
+        "summary": "Answers to test-tech questions",
+        "security": [{ "Bearer": [] }],
+        "parameters": [],
+        "requestBody": {
+          "description": "Answer's object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AnswerTheoryOrTechRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResultTheoryOrTechResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)"
+          },
+          "401": {
+            "description": "Unauthorized (invalid access token)"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "RegistrationRequest": {
+        "type": "object",
+        "required": ["name", "email", "password"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "User's name",
+            "example": "Ivan Ivanov"
+          },
+          "email": {
+            "type": "string",
+            "description": "User's email",
+            "format": "email"
+          },
+          "password": {
+            "type": "string",
+            "description": "User's password",
+            "example": "qwerty123"
+          }
+        }
+      },
+      "RegistrationResponse": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "User's name",
+            "example": "Ivan Ivanov"
+          },
+          "email": {
+            "type": "string",
+            "description": "User's email",
+            "format": "email"
+          }
+        }
+      },
+      "LoginRequest": {
+        "type": "object",
+        "required": ["email", "password"],
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "User's email",
+            "format": "email"
+          },
+          "password": {
+            "type": "string",
+            "description": "User's password",
+            "example": "qwerty123"
+          }
+        }
+      },
+      "LoginResponse": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "User's name",
+            "example": "Ivan Ivanov"
+          },
+          "email": {
+            "type": "string",
+            "description": "User's email",
+            "format": "email"
+          },
+          "avatarURL": {
+            "type": "string",
+            "description": "User's avatar",
+            "example": "https://ui-avatars.com/api/?name=Ivan Ivanov&size=200&font-size=0.5&length=1&rounded=true&bold=true&uppercase=true"
+          },
+          "token": {
+            "type": "string",
+            "description": "User's token",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwNzJlNmUwMjJiY2NjMjUyYmQ1ZDNmNiIsImlhdCI6MTYxODE0Mjk0NCwiZXhwIjoxNjE4MTUwMTQ0fQ.-Cq3mYTHEMVjyKF6d6qxmZbrdzW3QvbvwZbpQDNwICw"
+          }
+        }
+      },
+      "CurrentResponse": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "User's name",
+            "example": "Ivan Ivanov"
+          },
+          "email": {
+            "type": "string",
+            "description": "User's email",
+            "format": "email"
+          }
+        }
+      },
+      "GetTestTheoryOrTechResponse": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "_id": {
+              "type": "string",
+              "example": "6068d6591f5d3a29103ae974"
+            },
+            "question": {
+              "type": "string",
+              "example": "How many testing principles are there?"
+            },
+            "questionId": {
+              "type": "integer",
+              "example": "1"
+            },
+            "answers": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "example": "eXtreme Programming"
+              },
+
+              "example": [
+                {
+                  "_id": "6068d6591f5d3a29103ae974",
+                  "question": "How many testing principles are there?",
+                  "questionId": 1,
+                  "answers": ["5", "6", "7", "8", "9", "I don't know"]
+                },
+                {
+                  "_id": "6068d6591f5d3a29103ae979",
+                  "question": "What does XP stands for in testing",
+                  "questionId": 6,
+                  "answers": [
+                    "eXPerience",
+                    "eXtreme Programming",
+                    "eXperience Points",
+                    "XP Injection",
+                    "All options are correct",
+                    "All options are incorrect"
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      },
+      "AnswerTheoryOrTechRequest": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "questionId": {
+              "type": "integer",
+              "example": "1"
+            },
+            "answer": {
+              "type": "string",
+              "example": "eXperience Points"
+            }
+          }
+        }
+      },
+      "ResultTheoryOrTechResponse": {
+        "type": "object",
+        "properties": {
+          "rightAnswer": {
+            "type": "integer",
+            "example": "5"
+          },
+          "incorrectAnswer": {
+            "type": "integer",
+            "example": "7"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "Bearer": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}
