@@ -264,6 +264,7 @@ const googleRedirect = async (req, res, next) => {
 
       return res.redirect(
       `http://localhost:3000?token=${token}&refreshToken=${refreshToken}&sessionId=${sessionId}&avatarURL=${user.avatarURL}`
+
   );
 
     } else {
@@ -276,6 +277,7 @@ const googleRedirect = async (req, res, next) => {
        
       return res.redirect(
       `http://localhost:3000?token=${token}&refreshToken=${refreshToken}&sessionId=${sessionId}&avatarURL=${user.avatarURL}`
+
   );
       
     }
