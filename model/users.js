@@ -10,6 +10,7 @@ const create = async ({ name, email, password }) => {
     length: 1,
     rounded: true,
     size: 200,
+    background: "ffffff",
   });
   const user = new User({ name, email, password, avatarURL });
   return await user.save();
