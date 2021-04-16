@@ -17,10 +17,10 @@ const createSessionAndIssueTokens = async id => {
   const newSession = await Session.create({ id });
   const sessionId = newSession._id;
   const token = jwt.sign({ id, sessionId }, SECRET_KEY, {
-    expiresIn: '20m',
+    expiresIn: '10m',
   });
   const refreshToken = jwt.sign({ id, sessionId }, REFRESH_SECRET_KEY, {
-    expiresIn: '30d',
+    expiresIn: '20d',
   });
   await Users.updateToken(id, token);
   return { token, refreshToken, sessionId };
@@ -80,9 +80,6 @@ const login = async (req, res, next) => {
       refreshToken,
       sessionId,
     } = await createSessionAndIssueTokens(id);
-    // const payload = { id };
-    // const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '2h' });
-    // await Users.updateToken(id, token);
     return res.status(HttpCode.OK).json({
       status: 'success',
       code: HttpCode.OK,
@@ -130,21 +127,7 @@ const refreshToken = async (req, res, next) => {
         });
       }
 
-      // const reqRefreshToken = authorizationHeader.replace('Bearer ', '');
-
       let payload;
-      // try {
-      //   payload = jwt.verify(reqRefreshToken, REFRESH_SECRET_KEY);
-      // } catch (err) {
-      //   await Session.findByIdAndDelete(req.body.sessionId);
-      //   return res.status(HttpCode.UNAUTHORIZED).json({
-      //   status: 'error',
-      //   code: HttpCode.UNAUTHORIZED,
-      //   data: 'UNAUTHORIZED',
-      //   message: 'Email or password is wrong',
-      // });
-      // }
-
       const user = await Users.findById(payload.id);
       const session = await Session.findById(payload.sessionId);
       if (!user) {
@@ -273,9 +256,6 @@ const googleRedirect = async (req, res, next) => {
     if (!user) {
     const newUser = await Users.createGoogle({ name, email, password: name, avatarURL: picture });
       const id = await newUser.id;
-    // const payload = { id };
-    // const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '2h' });
-    // await Users.updateToken(id, token);
     const {
         token,
         refreshToken,
@@ -283,14 +263,11 @@ const googleRedirect = async (req, res, next) => {
       } = await createSessionAndIssueTokens(id);
 
       return res.redirect(
-      `${FRONTEND_URL}?token=${token}&refreshToken=${refreshToken}&sessionId=${sessionId}`
+      `http://localhost:3000?token=${token}&refreshToken=${refreshToken}&sessionId=${sessionId}&avatarURL=${user.avatarURL}`
   );
 
     } else {
     const id = await user.id;
-    // const payload = { id };
-    // const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '2h' });
-    // await Users.updateToken(id, token);
       const {
         token,
         refreshToken,
@@ -298,7 +275,7 @@ const googleRedirect = async (req, res, next) => {
       } = await createSessionAndIssueTokens(id);
        
       return res.redirect(
-      `${FRONTEND_URL}?token=${token}&refreshToken=${refreshToken}&sessionId=${sessionId}`
+      `http://localhost:3000?token=${token}&refreshToken=${refreshToken}&sessionId=${sessionId}&avatarURL=${user.avatarURL}`
   );
       
     }
