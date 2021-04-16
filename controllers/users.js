@@ -2,14 +2,29 @@ const jwt = require('jsonwebtoken');
 const queryString = require('query-string');
 const axios = require('axios');
 require('dotenv').config();
+const Session = require('../model/schema/session-schema');
 const SECRET_KEY = process.env.JWT_SECRET;
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const BASE_URL = process.env.BASE_URL;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
 const FRONTEND_URL = process.env.FRONTEND_URL;
+const REFRESH_SECRET_KEY = process.env.REFRESH_SECRET_KEY
 
 const Users = require('../model/users');
 const { HttpCode } = require('../helpers/constants');
+
+const createSessionAndIssueTokens = async id => {
+  const newSession = await Session.create({ id });
+  const sessionId = newSession._id;
+  const token = jwt.sign({ id, sessionId }, SECRET_KEY, {
+    expiresIn: '10m',
+  });
+  const refreshToken = jwt.sign({ id, sessionId }, REFRESH_SECRET_KEY, {
+    expiresIn: '20d',
+  });
+  await Users.updateToken(id, token);
+  return { token, refreshToken, sessionId };
+};
 
 const reg = async (req, res, next) => {
   try {
@@ -60,14 +75,18 @@ const login = async (req, res, next) => {
       });
     }
     const id = user.id;
-    const payload = { id };
-    const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '2h' });
-    await Users.updateToken(id, token);
+    const {
+      token,
+      refreshToken,
+      sessionId,
+    } = await createSessionAndIssueTokens(id);
     return res.status(HttpCode.OK).json({
       status: 'success',
       code: HttpCode.OK,
       data: {
         token,
+        refreshToken,
+        sessionId,
         email,
         name: user.name,
         avatarURL: user.avatarURL,
@@ -81,8 +100,79 @@ const login = async (req, res, next) => {
 const logout = async (req, res, next) => {
   try {
     const id = req.user.id;
+    const sessionId = req.session._id;
+    await Session.findByIdAndDelete(sessionId);
+    const userSessions = await Session.find({ id });
+  if (userSessions.length > 3) {
+    await Session.deleteMany({ id });
+  }
     await Users.updateToken(id, null);
     return res.status(HttpCode.NO_CONTENT).json();
+  } catch (e) {
+    next(e);
+  }
+};
+
+const refreshToken = async (req, res, next) => {
+  try {
+    const authorizationHeader = req.get('Authorization');
+    if (authorizationHeader) {
+      const activeSession = await Session.findById(req.body.sessionId);
+      if (!activeSession) {
+        return res.status(HttpCode.NOT_FOUND).json({
+        status: 'error',
+        code: HttpCode.NOT_FOUND,
+        data: 'NOT_FOUND',
+        message: 'User not found',
+        });
+      }
+
+      let payload;
+      const user = await Users.findById(payload.id);
+      const session = await Session.findById(payload.sessionId);
+      if (!user) {
+        return res.status(HttpCode.NOT_FOUND).json({
+        status: 'error',
+        code: HttpCode.NOT_FOUND,
+        data: 'NOT_FOUND',
+        message: 'User not found',
+      });
+      }
+      if (!session) {
+        return res.status(HttpCode.NOT_FOUND).json({
+        status: 'error',
+        code: HttpCode.NOT_FOUND,
+        data: 'NOT_FOUND',
+        message: 'Session not found',
+        });
+      }
+      await Session.findByIdAndDelete(payload.sessionId);
+      const userSessions = await Session.find({ id: user.id });
+      if (userSessions.length > 3) {
+        await Session.deleteMany({ id: user.id });
+      }
+      const id = user.id;
+      const {
+        token,
+        refreshToken,
+        sessionId,
+      } = await createSessionAndIssueTokens(id);
+      return res.status(HttpCode.OK).json({
+        status: 'success',
+        code: HttpCode.OK,
+        data: {
+          token,
+          refreshToken,
+          sessionId,
+        },
+      });
+    }
+    return res.status(HttpCode.BAD_REQUEST).json({
+      status: 'error',
+      code: HttpCode.BAD_REQUEST,
+      data: 'BAD_REQUEST',
+      message: 'Token not provided',
+    });
   } catch (e) {
     next(e);
   }
@@ -165,23 +255,29 @@ const googleRedirect = async (req, res, next) => {
 
     if (!user) {
     const newUser = await Users.createGoogle({ name, email, password: name, avatarURL: picture });
-    const id = await newUser.id;
-    const payload = { id };
-    const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '2h' });
-    await Users.updateToken(id, token);
+      const id = await newUser.id;
+    const {
+        token,
+        refreshToken,
+        sessionId,
+      } = await createSessionAndIssueTokens(id);
 
       return res.redirect(
-      `http://localhost:3000/auth/google?token=${token}&avatarURL=${newUser.avatarURL}`
+      `http://localhost:3000?token=${token}&refreshToken=${refreshToken}&sessionId=${sessionId}&avatarURL=${user.avatarURL}`
+
   );
 
     } else {
     const id = await user.id;
-    const payload = { id };
-    const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '2h' });
-    await Users.updateToken(id, token);
+      const {
+        token,
+        refreshToken,
+        sessionId,
+      } = await createSessionAndIssueTokens(id);
        
       return res.redirect(
-      `http://localhost:3000/auth/google?token=${token}&avatarURL=${user.avatarURL}`
+      `http://localhost:3000?token=${token}&refreshToken=${refreshToken}&sessionId=${sessionId}&avatarURL=${user.avatarURL}`
+
   );
       
     }
@@ -194,6 +290,7 @@ module.exports = {
   reg,
   login,
   logout,
+  refreshToken,
   userCurrent,
   googleAuth,
   googleRedirect,
