@@ -263,7 +263,7 @@ const googleRedirect = async (req, res, next) => {
       } = await createSessionAndIssueTokens(id);
 
       return res.redirect(
-      `http://localhost:3000/auth/google?token=${token}&refreshToken=${refreshToken}&sessionId=${sessionId}&avatarURL=${user.avatarURL}`
+      `http://localhost:3000/auth/google?token=${token}&refreshToken=${refreshToken}&sessionId=${sessionId}&avatarURL=${newUser.avatarURL}`
   );
 
     } else {
